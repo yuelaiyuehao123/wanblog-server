@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wanblog.common.dto.LoginDto;
 import com.wanblog.common.dto.SignUpDto;
 import com.wanblog.common.lang.Result;
+import com.wanblog.common.vo.LoginVo;
 import com.wanblog.entity.User;
 import com.wanblog.service.UserService;
 import com.wanblog.util.JwtUtils;
@@ -31,50 +32,22 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    JwtUtils jwtUtils;
-
-    @RequiresAuthentication
-    @GetMapping("/index")
-    public Result index() {
-        User user = userService.getById(1L);
-        return Result.succ(user);
-    }
-
     @PostMapping("/signUp")
     public Result signUp(@Validated @RequestBody SignUpDto signUpDto) {
-        User dbUser = userService.getOne(new QueryWrapper<User>().eq("username", signUpDto.getUsername()));
-        Assert.isNull(dbUser, "用户已存在");
-        User user = new User();
-        user.setPassword(SecureUtil.md5(signUpDto.getPassword()));
-        user.setUsername(signUpDto.getUsername());
-        user.setStatus(0);
-        user.setCreated(LocalDateTime.now());
-        boolean result = userService.save(user);
-        return result ? Result.succ(null) : Result.fail(null);
+        userService.signUp(signUpDto);
+        return Result.succ(null);
     }
 
     @PostMapping("/login")
     public Result login(@Validated @RequestBody LoginDto loginDto) {
-        User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
-        Assert.notNull(user, "用户不存在");
-        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
-            return Result.fail("密码不正确");
-        }
-        String jwt = jwtUtils.generateToken(user.getId());
-        return Result.succ(MapUtil.builder()
-                .put("id", user.getId())
-                .put("username", user.getUsername())
-                .put("email", user.getEmail())
-                .put("token", jwt)
-                .map()
-        );
+        LoginVo loginVo = userService.login(loginDto);
+        return Result.succ(loginVo);
     }
 
     @RequiresAuthentication
     @GetMapping("/logout")
     public Result logout() {
-        SecurityUtils.getSubject().logout();
+        userService.logout();
         return Result.succ(null);
     }
 
