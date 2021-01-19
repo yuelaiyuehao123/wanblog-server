@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: wanblog
+
+server:
+  port: 8080
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+wanblog:
+  jwt:
+    secret: wanblog
+    expire: 604800
+    header: Authorization
