@@ -1,5 +1,6 @@
 package com.wanblog.common.exception;
 
+import com.wanblog.common.lang.APICode;
 import com.wanblog.common.lang.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.ShiroException;
@@ -15,34 +16,34 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = ShiroException.class)
     public Result handler(ShiroException e) {
         log.error("运行时异常：----------------{}", e);
-        return Result.fail(401, e.getMessage(), null);
+        return Result.error(APICode.TOKEN_EXCEPTION);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result handler(MethodArgumentNotValidException e) {
         log.error("实体校验异常：----------------{}", e);
         BindingResult bindingResult = e.getBindingResult();
         ObjectError objectError = bindingResult.getAllErrors().stream().findFirst().get();
-        return Result.fail(objectError.getDefaultMessage());
+        return Result.error(APICode.REQUEST_EXCEPTION.getCode(), objectError.getDefaultMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = IllegalArgumentException.class)
     public Result handler(IllegalArgumentException e) {
         log.error("Assert异常：----------------{}", e);
-        return Result.fail(e.getMessage());
+        return Result.error(e.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(value = RuntimeException.class)
     public Result handler(RuntimeException e) {
         log.error("运行时异常：----------------{}", e);
-        return Result.fail(e.getMessage());
+        return Result.error(e.getMessage());
     }
 
 }

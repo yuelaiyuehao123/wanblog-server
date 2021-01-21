@@ -3,6 +3,10 @@ package com.wanblog.controller;
 import com.wanblog.common.dto.DeleteBlogDto;
 import com.wanblog.common.dto.EditBlogDto;
 import com.wanblog.common.dto.PublishBlogDto;
+import com.wanblog.common.exception.BlogNoEditException;
+import com.wanblog.common.exception.BlogNoExistException;
+import com.wanblog.common.exception.UserExistException;
+import com.wanblog.common.lang.APICode;
 import com.wanblog.common.lang.Result;
 import com.wanblog.common.vo.BlogListVo;
 import com.wanblog.entity.Blog;
@@ -28,33 +32,41 @@ public class BlogController {
     @GetMapping("/list")
     public Result list(@RequestParam(defaultValue = "1") Integer currentPage, @RequestParam(defaultValue = "5") Integer size) {
         List<BlogListVo> blogList = blogService.blogList(currentPage, size);
-        return Result.succ(blogList);
+        return Result.ok(blogList);
     }
 
     @GetMapping("/{id}")
     public Result detail(@PathVariable(name = "id") Long id) {
-        Blog blog = blogService.detail(id);
-        return Result.succ(blog);
+        try {
+            Blog blog = blogService.detail(id);
+            return Result.ok(blog);
+        } catch (BlogNoExistException blogNoExistException) {
+            return Result.error(APICode.BLOG_NO_EXIST_EXCEPTION);
+        }
     }
 
     @RequiresAuthentication
     @PostMapping("/edit")
     public Result edit(@Validated @RequestBody EditBlogDto editBlogDto) {
-        blogService.edit(editBlogDto);
-        return Result.succ(null);
+        try {
+            blogService.edit(editBlogDto);
+            return Result.ok();
+        } catch (BlogNoEditException blogNoEditException) {
+            return Result.error(APICode.BLOG_NO_EDIT_EXCEPTION);
+        }
     }
 
     @RequiresAuthentication
     @PostMapping("/publish")
     public Result publish(@Validated @RequestBody PublishBlogDto publishBlogDto) {
         blogService.publish(publishBlogDto);
-        return Result.succ(null);
+        return Result.ok();
     }
 
     @GetMapping("/delete")
     public Result delete(@Validated @RequestBody DeleteBlogDto deleteBlogDto) {
         blogService.delete(deleteBlogDto);
-        return Result.succ(null);
+        return Result.ok();
     }
 
 }

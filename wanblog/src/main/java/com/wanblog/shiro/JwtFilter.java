@@ -58,7 +58,7 @@ public class JwtFilter extends AuthenticatingFilter {
     protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         Throwable throwable = e.getCause() == null ? e : e.getCause();
-        Result result = Result.fail(throwable.getMessage());
+        Result result = Result.error(throwable.getMessage());
         String json = JSONUtil.toJsonStr(result);
         try {
             httpServletResponse.getWriter().print(json);

@@ -5,6 +5,9 @@ import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wanblog.common.dto.LoginDto;
 import com.wanblog.common.dto.SignUpDto;
+import com.wanblog.common.exception.PasswordException;
+import com.wanblog.common.exception.UserExistException;
+import com.wanblog.common.exception.UserNoExistException;
 import com.wanblog.common.vo.LoginVo;
 import com.wanblog.entity.User;
 import com.wanblog.mapper.UserMapper;
@@ -37,7 +40,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signUp(SignUpDto signUpDto) {
         User dbUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", signUpDto.getUsername()));
-        Assert.isNull(dbUser, "用户已存在");
+        if (dbUser != null) {
+            throw new UserExistException();
+        }
         User user = new User();
         user.setPassword(SecureUtil.md5(signUpDto.getPassword()));
         user.setUsername(signUpDto.getUsername());
@@ -49,8 +54,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginVo login(LoginDto loginDto) {
         User dbUser = userMapper.selectOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
-        Assert.notNull(dbUser, "用户不存在");
-        Assert.isTrue(dbUser.getPassword().equals(SecureUtil.md5(loginDto.getPassword())), "密码错误");
+        if (dbUser == null) {
+            throw new UserNoExistException();
+        }
+        if (!dbUser.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
+            throw new PasswordException();
+        }
         String token = jwtUtils.generateToken(dbUser.getId());
         LoginVo loginVo = new LoginVo();
         loginVo.setToken(token);

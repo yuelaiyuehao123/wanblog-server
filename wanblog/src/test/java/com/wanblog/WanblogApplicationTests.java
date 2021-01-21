@@ -19,7 +19,6 @@ class WanblogApplicationTests {
 
     @Test
     void contextLoads() {
-
     }
 
 }

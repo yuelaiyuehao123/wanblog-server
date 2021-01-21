@@ -3,10 +3,11 @@ package com.wanblog.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wanblog.common.dto.DeleteBlogDto;
 import com.wanblog.common.dto.EditBlogDto;
 import com.wanblog.common.dto.PublishBlogDto;
+import com.wanblog.common.exception.BlogNoEditException;
+import com.wanblog.common.exception.BlogNoExistException;
 import com.wanblog.common.vo.BlogListVo;
 import com.wanblog.entity.Blog;
 import com.wanblog.entity.User;
@@ -60,16 +61,18 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog detail(Long id) {
         Blog blog = blogMapper.selectById(id);
-        Assert.notNull(blog, "该博客已被删除");
+        if (blog == null) {
+            throw new BlogNoExistException();
+        }
         return blog;
     }
 
     @Override
     public void edit(EditBlogDto editBlogDto) {
         Blog temp = blogMapper.selectById(editBlogDto.getId());
-        // 只能编辑自己的文章
-        System.out.println(ShiroUtil.getProfile().getId());
-        Assert.isTrue(temp.getUserId().longValue() == ShiroUtil.getProfile().getId().longValue(), "没有权限编辑");
+        if (temp.getUserId().longValue() != ShiroUtil.getProfile().getId().longValue()) {
+            throw new BlogNoEditException();
+        }
         BeanUtil.copyProperties(editBlogDto, temp, "id", "userId", "created", "status");
         blogMapper.updateById(temp);
     }
@@ -86,8 +89,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void delete(DeleteBlogDto deleteBlogDto) {
-        Blog blog = blogMapper.selectById(deleteBlogDto.getId());
-        Assert.notNull(blog, "该博客已被删除");
         blogMapper.deleteById(deleteBlogDto.getId());
     }
 }
