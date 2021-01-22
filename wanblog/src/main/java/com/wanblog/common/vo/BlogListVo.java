@@ -7,7 +7,9 @@ import java.io.Serializable;
 @Data
 public class BlogListVo implements Serializable {
 
-    private Long id;
+    private Long blog_id;
+
+    private Long user_id;
 
     private String title;
 

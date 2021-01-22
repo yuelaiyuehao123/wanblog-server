@@ -50,9 +50,12 @@ public class BlogServiceImpl implements BlogService {
             Long userId = blog.getUserId();
             User user = userMapper.selectById(userId);
             BlogListVo vo = new BlogListVo();
+            vo.setBlog_id(blog.getId());
+            vo.setUser_id(userId);
             vo.setUsername(user.getUsername());
             vo.setAvatar(user.getAvatar());
-            BeanUtil.copyProperties(blog, vo);
+            vo.setTitle(blog.getTitle());
+            vo.setDescription(blog.getDescription());
             blogListVoList.add(vo);
         }
         return blogListVoList;
