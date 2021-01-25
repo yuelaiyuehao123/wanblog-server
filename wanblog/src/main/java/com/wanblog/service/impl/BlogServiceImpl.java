@@ -18,7 +18,6 @@ import com.wanblog.service.BlogService;
 import com.wanblog.util.ShiroUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Blog detail(Long id) {
+    public BlogVo detail(Long id) {
         Blog blog = blogMapper.selectById(id);
         if (blog == null) {
             throw new BlogNoExistException();
@@ -72,12 +71,12 @@ public class BlogServiceImpl implements BlogService {
         vo.setUid(blog.getUserId());
         vo.setBid(blog.getId());
         BeanUtil.copyProperties(blog, vo);
-        return blog;
+        return vo;
     }
 
     @Override
     public void edit(EditBlogDto editBlogDto) {
-        Blog temp = blogMapper.selectById(editBlogDto.getId());
+        Blog temp = blogMapper.selectById(editBlogDto.getBid());
         if (temp == null) {
             throw new BlogNoExistException();
         }
@@ -100,6 +99,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void delete(DeleteBlogDto deleteBlogDto) {
-        blogMapper.deleteById(deleteBlogDto.getId());
+        blogMapper.deleteById(deleteBlogDto.getBid());
     }
 }

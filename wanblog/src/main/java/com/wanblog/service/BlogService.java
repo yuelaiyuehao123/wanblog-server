@@ -4,6 +4,7 @@ import com.wanblog.common.dto.DeleteBlogDto;
 import com.wanblog.common.dto.EditBlogDto;
 import com.wanblog.common.dto.PublishBlogDto;
 import com.wanblog.common.vo.BlogListVo;
+import com.wanblog.common.vo.BlogVo;
 import com.wanblog.entity.Blog;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface BlogService {
 
     List<BlogListVo> blogList(int currentPage, int size);
 
-    Blog detail(Long id);
+    BlogVo detail(Long id);
 
     void edit(EditBlogDto editBlogDto);
 

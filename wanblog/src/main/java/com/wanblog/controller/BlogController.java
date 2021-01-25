@@ -8,6 +8,7 @@ import com.wanblog.common.exception.BlogNoExistException;
 import com.wanblog.common.lang.APICode;
 import com.wanblog.common.lang.Result;
 import com.wanblog.common.vo.BlogListVo;
+import com.wanblog.common.vo.BlogVo;
 import com.wanblog.entity.Blog;
 import com.wanblog.service.BlogService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -37,8 +38,8 @@ public class BlogController {
     @GetMapping("/{bid}")
     public Result detail(@PathVariable(name = "bid") Long id) {
         try {
-            Blog blog = blogService.detail(id);
-            return Result.ok(blog);
+            BlogVo vo = blogService.detail(id);
+            return Result.ok(vo);
         } catch (BlogNoExistException blogNoExistException) {
             return Result.error(APICode.BLOG_NO_EXIST_EXCEPTION);
         }
