@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Data
 public class EditBlogDto implements Serializable {
 
-    @NotNull(message = "id不能为空")
-    private Long id;
+    @NotNull(message = "bid不能为空")
+    private Long bid;
 
     @NotBlank(message = "标题不能为空")
     private String title;

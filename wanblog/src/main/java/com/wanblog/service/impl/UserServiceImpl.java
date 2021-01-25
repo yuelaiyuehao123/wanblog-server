@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         String token = jwtUtils.generateToken(dbUser.getId());
         LoginVo loginVo = new LoginVo();
         loginVo.setToken(token);
+        loginVo.setUid(dbUser.getId());
         BeanUtil.copyProperties(dbUser, loginVo);
         return loginVo;
     }

@@ -5,7 +5,6 @@ import com.wanblog.common.dto.EditBlogDto;
 import com.wanblog.common.dto.PublishBlogDto;
 import com.wanblog.common.exception.BlogNoEditException;
 import com.wanblog.common.exception.BlogNoExistException;
-import com.wanblog.common.exception.UserExistException;
 import com.wanblog.common.lang.APICode;
 import com.wanblog.common.lang.Result;
 import com.wanblog.common.vo.BlogListVo;
@@ -35,8 +34,8 @@ public class BlogController {
         return Result.ok(blogList);
     }
 
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable(name = "id") Long id) {
+    @GetMapping("/{bid}")
+    public Result detail(@PathVariable(name = "bid") Long id) {
         try {
             Blog blog = blogService.detail(id);
             return Result.ok(blog);
@@ -51,6 +50,8 @@ public class BlogController {
         try {
             blogService.edit(editBlogDto);
             return Result.ok();
+        } catch (BlogNoExistException blogNoExistException) {
+            return Result.error(APICode.BLOG_NO_EXIST_EXCEPTION);
         } catch (BlogNoEditException blogNoEditException) {
             return Result.error(APICode.BLOG_NO_EDIT_EXCEPTION);
         }

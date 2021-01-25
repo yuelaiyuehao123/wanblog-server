@@ -9,6 +9,7 @@ import com.wanblog.common.dto.PublishBlogDto;
 import com.wanblog.common.exception.BlogNoEditException;
 import com.wanblog.common.exception.BlogNoExistException;
 import com.wanblog.common.vo.BlogListVo;
+import com.wanblog.common.vo.BlogVo;
 import com.wanblog.entity.Blog;
 import com.wanblog.entity.User;
 import com.wanblog.mapper.BlogMapper;
@@ -50,8 +51,8 @@ public class BlogServiceImpl implements BlogService {
             Long userId = blog.getUserId();
             User user = userMapper.selectById(userId);
             BlogListVo vo = new BlogListVo();
-            vo.setBlog_id(blog.getId());
-            vo.setUser_id(userId);
+            vo.setBid(blog.getId());
+            vo.setUid(userId);
             vo.setUsername(user.getUsername());
             vo.setAvatar(user.getAvatar());
             vo.setTitle(blog.getTitle());
@@ -67,12 +68,19 @@ public class BlogServiceImpl implements BlogService {
         if (blog == null) {
             throw new BlogNoExistException();
         }
+        BlogVo vo = new BlogVo();
+        vo.setUid(blog.getUserId());
+        vo.setBid(blog.getId());
+        BeanUtil.copyProperties(blog, vo);
         return blog;
     }
 
     @Override
     public void edit(EditBlogDto editBlogDto) {
         Blog temp = blogMapper.selectById(editBlogDto.getId());
+        if (temp == null) {
+            throw new BlogNoExistException();
+        }
         if (temp.getUserId().longValue() != ShiroUtil.getProfile().getId().longValue()) {
             throw new BlogNoEditException();
         }

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class BlogListVo implements Serializable {
+public class BlogVo implements Serializable {
 
     private Long bid;
 
@@ -15,8 +15,10 @@ public class BlogListVo implements Serializable {
 
     private String description;
 
-    private String username;
+    private String content;
 
-    private String avatar;
+    private String created;
+
+    private String status;
 
 }

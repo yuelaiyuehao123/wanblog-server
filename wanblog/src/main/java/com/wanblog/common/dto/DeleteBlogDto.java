@@ -9,6 +9,6 @@ import java.io.Serializable;
 public class DeleteBlogDto implements Serializable {
 
     @NotNull(message = "id不能为空")
-    private Long id;
+    private Long bid;
 
 }

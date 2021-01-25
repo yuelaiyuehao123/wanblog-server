@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Data
 public class LoginVo implements Serializable {
 
-    private Long id;
+    private Long uid;
 
     private String username;
 
