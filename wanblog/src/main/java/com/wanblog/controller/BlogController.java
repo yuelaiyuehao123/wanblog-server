@@ -65,7 +65,7 @@ public class BlogController {
         return Result.ok();
     }
 
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public Result delete(@Validated @RequestBody DeleteBlogDto deleteBlogDto) {
         blogService.delete(deleteBlogDto);
         return Result.ok();
