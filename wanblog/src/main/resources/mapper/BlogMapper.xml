@@ -2,4 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wanblog.mapper.BlogMapper">
 
+    <resultMap id="Top3ListVoMap" type="com.wanblog.common.vo.Top3ListVo">
+        <result property="uid" column="user_id"/>
+    </resultMap>
+
+    <select id="getTop3List" resultMap="Top3ListVoMap">
+        select m_blog.user_id, m_user.username, count(user_id) as count
+        from m_blog left join m_user
+        on m_blog.user_id = m_user.id
+        group by m_blog.user_id
+        order by m_blog.user_id ASC limit 3;
+    </select>
+
 </mapper>

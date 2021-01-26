@@ -1,8 +1,11 @@
 package com.wanblog.mapper;
 
+import com.wanblog.common.vo.Top3ListVo;
 import com.wanblog.entity.Blog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +17,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BlogMapper extends BaseMapper<Blog> {
+
+    List<Top3ListVo> getTop3List();
 
 }

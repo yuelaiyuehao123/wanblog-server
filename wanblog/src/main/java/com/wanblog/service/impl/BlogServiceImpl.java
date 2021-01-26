@@ -10,6 +10,7 @@ import com.wanblog.common.exception.BlogNoEditException;
 import com.wanblog.common.exception.BlogNoExistException;
 import com.wanblog.common.vo.BlogListVo;
 import com.wanblog.common.vo.BlogVo;
+import com.wanblog.common.vo.Top3ListVo;
 import com.wanblog.entity.Blog;
 import com.wanblog.entity.User;
 import com.wanblog.mapper.BlogMapper;
@@ -100,5 +101,11 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void delete(DeleteBlogDto deleteBlogDto) {
         blogMapper.deleteById(deleteBlogDto.getBid());
+    }
+
+    @Override
+    public List<Top3ListVo> top3List() {
+        List<Top3ListVo> list = blogMapper.getTop3List();
+        return list;
     }
 }

@@ -5,7 +5,7 @@ import com.wanblog.common.dto.EditBlogDto;
 import com.wanblog.common.dto.PublishBlogDto;
 import com.wanblog.common.vo.BlogListVo;
 import com.wanblog.common.vo.BlogVo;
-import com.wanblog.entity.Blog;
+import com.wanblog.common.vo.Top3ListVo;
 
 import java.util.List;
 
@@ -24,4 +24,6 @@ public interface BlogService {
     void publish(PublishBlogDto publishBlogDto);
 
     void delete(DeleteBlogDto deleteBlogDto);
+
+    List<Top3ListVo> top3List();
 }

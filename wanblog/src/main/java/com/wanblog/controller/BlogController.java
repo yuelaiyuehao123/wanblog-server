@@ -9,7 +9,7 @@ import com.wanblog.common.lang.APICode;
 import com.wanblog.common.lang.Result;
 import com.wanblog.common.vo.BlogListVo;
 import com.wanblog.common.vo.BlogVo;
-import com.wanblog.entity.Blog;
+import com.wanblog.common.vo.Top3ListVo;
 import com.wanblog.service.BlogService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +69,13 @@ public class BlogController {
     public Result delete(@Validated @RequestBody DeleteBlogDto deleteBlogDto) {
         blogService.delete(deleteBlogDto);
         return Result.ok();
+    }
+
+
+    @GetMapping("/top3List")
+    public Result top3List() {
+        List<Top3ListVo> list = blogService.top3List();
+        return Result.ok(list);
     }
 
 }
