@@ -3,10 +3,10 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://59.110.44.147:3306/wanblog?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://www.yuelaiyuehao.top:3306/wanblog?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 shiro-redis:
   enabled: true
   redis-manager:
-    host: 59.110.44.147:6379
+    host: www.yuelaiyuehao.top:6379
