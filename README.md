@@ -9,7 +9,7 @@
 - docker
 
 ## 接口文档
-[传送门](https://www.showdoc.com.cn/1225628583921812?page_id=6176126182622912)
+[https://www.showdoc.com.cn/1225628583921812?page_id=6176126182622912](https://www.showdoc.com.cn/1225628583921812?page_id=6176126182622912)
 
 ## 客户端 MVVM方式实现
 [https://github.com/yuelaiyuehao123/wanblog-mvvm](https://github.com/yuelaiyuehao123/wanblog-mvvm)
